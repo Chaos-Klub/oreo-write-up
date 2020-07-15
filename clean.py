@@ -28,6 +28,8 @@ class MemorixVault:
     def decrypt(self,encrypted, passphrase): #EQUIVALENT TO JAVA DECRYPT FUNCTION
         aes = AES.new(passphrase, AES.MODE_ECB)
         return aes.decrypt(base64.b64decode(encrypted))
+
+
     def crack(self):
         entries = {"clear":[],"vault":[]}
         xml = ET.parse(self.xml_path).getroot() #PARSE XML FOR READING SALT,HASH AND MASTERKEY
@@ -51,6 +53,7 @@ class MemorixVault:
         encrypted_len = len(entries["vault"]) #CALCULATING NUMBER OF ENCRYPTED ENTRIES ( JUST FOR VISUAL )
         mdo = mdo.decode("utf-8").replace("\x0c","").encode("utf-8") #REMOVE MDO GARBAGE
         masterKey = pbkdf2_hmac("sha1", mdo, salt, 1000, 32)  #GETTING DECRYPTED MASTERKEY BY USING MDO
+
         for entry in entries["vault"]: 
             encryptedTitle = entry[1] #GETTING ENCRYPTED TITLE
             encryptedContent = entry[2] #GETTING ENCRYPTED CONTENT
