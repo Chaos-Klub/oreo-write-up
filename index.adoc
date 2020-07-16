@@ -268,7 +268,7 @@ af91f6549d776d17cXXXXXXXXXXXXXXX
 ----
 
 
-=== Privilege Escalation: The ROOT
+=== 7.Privilege Escalation: The ROOT
 
 Yeees the user flag , but now , how can we become root ?
 
