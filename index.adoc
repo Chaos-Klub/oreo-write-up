@@ -76,7 +76,7 @@ There's an ADB remote server, but it's protected by a firewall
 
 ==== 3.Syncthing
 When we try to access the interface, it asks user and password.. +
-Ugh.. Guessing.. Founded ! That's *syncthing:syncthing* +
+Ugh.. Guessing.. Found ! That's *syncthing:syncthing* +
 Ok. Now we're logged into Syncthing
 
 image::syncthing01.png[]
@@ -266,6 +266,9 @@ Oh , the user flag
 $ cat user.txt 
 af91f6549d776d17cXXXXXXXXXXXXXXX
 ----
+
+
+=== Privilege Escalation: The ROOT
 
 Yeees the user flag , but now , how can we become root ?
 
