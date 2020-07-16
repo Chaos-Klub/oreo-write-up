@@ -208,7 +208,7 @@ Now, let's use it , that's so simple , you just have to do +
 
 `python script.py notes_db panama.android.notes_preferences.xml --vaultonly` 
 
---vaultonly parameter tell the script not to display entries that are not in the vault
+--vaultonly parameter tells the script not to display entries that are not in the vault
 
 NOTE: Obviously, you must copy these two files in the same folder as the script
 
