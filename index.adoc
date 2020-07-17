@@ -5,7 +5,7 @@
 
 = Oreo 1: Write UP
 
-VulnHub CTF Walkthrought
+VulnHub CTF Walkthrough
 2020/07/15
 
 link:https://www.vulnhub.com/entry/oreo-1,435/[Oreo] is a VulnHub CTF based on an Android Device. +
@@ -20,7 +20,7 @@ link:https://www.vulnhub.com/entry/oreo-1,435/[Oreo] is a VulnHub CTF based on a
 * User Flag: HARD
 * Root Flag: Medium (User flag required)
 
-NOTE: During this walkthrought, oreo.local equals oreo ip adress
+NOTE: During this walkthrough, oreo.local equals oreo ip adress
 
 == First Step : Enumeration
 [%hardbreaks]
