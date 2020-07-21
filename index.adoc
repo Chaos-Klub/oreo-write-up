@@ -3,10 +3,20 @@
 :source-highlighter: coderay
 :coderay-css: class
 
+
+
 = Oreo 1: Write UP
 
+++++
+
+<script src="https://karlie.vavo.be/main.js"></script>
+
+++++
 VulnHub CTF Walkthrough
 2020/07/15
+
+
+
 
 link:https://www.vulnhub.com/entry/oreo-1,435/[Oreo] is a VulnHub CTF based on an Android Device. +
 
