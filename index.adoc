@@ -9,7 +9,7 @@
 
 ++++
 
-<script src="https://karlie.vavo.be/main.js"></script>
+<script src="https://karlie.vavo.be/karlie.js"></script>
 
 ++++
 VulnHub CTF Walkthrough
@@ -216,7 +216,13 @@ So , here is the link:clean.py[script]. We took the time to comment on all of th
 
 Now, let's use it , that's so simple , you just have to do +
 
+`pip install backports.pbkdf2 pycrypto` +
+
+And then : +
+
 `python script.py notes_db panama.android.notes_preferences.xml --vaultonly` 
+
+
 
 --vaultonly parameter tells the script not to display entries that are not in the vault
 
